@@ -5,8 +5,51 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Store_a_Kanji"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="Store a Kanji"
+        WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize"
+        MaxHeight="200" MinHeight="200" Height="200" MaxWidth="400" MinWidth="400" Width="400">
+    <Window.Resources>
+        <Style TargetType="TextBox">
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Margin" Value="10"/>
+        </Style>
+        
+        <Style TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="10"/>
+        </Style>
 
+        <Style TargetType="Button">
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+            <Setter Property="Margin" Value="12 12 18 12"/>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.35*"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="0.4*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.25*"/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition Height="0.25*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Column="0" Grid.Row="1" Text="漢字" />
+        <TextBlock Grid.Column="0" Grid.Row="2" Text="Hiragana" />
+        <TextBlock Grid.Column="0" Grid.Row="3" Text="Translate" />
+
+        <TextBox Grid.Column="1" Grid.Row="1" Text="Kanji" />
+        <TextBox Grid.Column="1" Grid.Row="2" Text="Hiragana" />
+        <TextBox Grid.Column="1" Grid.Row="3" Text="Translate" />
+
+        <Button Grid.Column="2" Grid.Row="1" Grid.RowSpan="3" Content="Store" />
     </Grid>
 </Window>
