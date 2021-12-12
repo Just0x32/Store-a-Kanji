@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -33,6 +36,7 @@ namespace Store_a_Kanji
             InitializeComponent();
 
             onAppStartLanguage = InputLanguageManager.Current.CurrentInputLanguage.Name.ToString();
+            CurrentLanguage = onAppStartLanguage;
 
             GetAvailableLanguages();
             availableLanguagesCount = availableLanguages.Count();
@@ -40,8 +44,10 @@ namespace Store_a_Kanji
             //ValidateLanguages();
 
             defaultLanguageId = GetDefaultLanguageId();
-            SetTranslateButtonText(availableLanguages[defaultLanguageId]);
+
             CurrentLanguageId = defaultLanguageId;
+            CurrentLanguage = availableLanguages[defaultLanguageId];
+            SetTranslateButtonText(CurrentLanguage);
 
             //Show available languages
             var sb = new StringBuilder();
@@ -56,6 +62,8 @@ namespace Store_a_Kanji
         private bool IsJapaneseAvailable { get; set; } = false;
 
         private int CurrentLanguageId { get; set; }
+
+        public string CurrentLanguage { get; private set; }
 
         private void GetAvailableLanguages()
         {
@@ -115,10 +123,10 @@ namespace Store_a_Kanji
 
         private void TranslateButtonClick(object sender, RoutedEventArgs e)
         {
-            CurrentLanguageId = (CurrentLanguageId < availableLanguagesCount - 1) ? CurrentLanguageId + 1 : 1;
-            InputLanguageManager.SetInputLanguage(TranslateTextBox, new CultureInfo(availableLanguages[CurrentLanguageId]));
+            ChangeCurrentLanguage();
 
-            SetTranslateButtonText(availableLanguages[CurrentLanguageId]);
+            ChangeTranslateTextBoxLanguage(CurrentLanguage);
+            SetTranslateButtonText(CurrentLanguage);
         }
 
         private void SetTranslateButtonText(string language)
@@ -133,9 +141,26 @@ namespace Store_a_Kanji
             }
         }
 
-        private void CloseApp()
+        private void ChangeCurrentLanguage()
         {
-            Application.Current.Shutdown();
+            CurrentLanguageId = (CurrentLanguageId < availableLanguagesCount - 1) ? CurrentLanguageId + 1 : 1;
+            CurrentLanguage = availableLanguages[CurrentLanguageId];
         }
+
+        private void ChangeTranslateTextBoxLanguage(string language)
+        {
+            InputLanguageManager.SetInputLanguage(TranslateTextBox, new CultureInfo(language));
+            RefreshFocusedElement();
+        }
+
+        private void RefreshFocusedElement()
+        {
+            UIElement element;
+            element = Keyboard.FocusedElement as UIElement;
+            Keyboard.ClearFocus();
+            element.Focus();
+        }
+
+        private void CloseApp() => Application.Current.Shutdown();
     }
 }

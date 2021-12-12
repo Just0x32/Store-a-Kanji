@@ -1,4 +1,5 @@
 ﻿<Window x:Class="Store_a_Kanji.MainWindow"
+        x:Name="MainWindowClass" x:FieldModifier="private"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -38,19 +39,20 @@
 
         <TextBlock Grid.Column="0" Grid.Row="1" Text="漢字" />
         <TextBlock Grid.Column="0" Grid.Row="2" Text="Hiragana" />
-        <!--<TextBlock Grid.Column="0" Grid.Row="3" Text="Translate" />-->
-
-        <TextBox Grid.Column="1" Grid.Row="1" Text="Kanji" />
-        <TextBox Grid.Column="1" Grid.Row="2" Text="Hiragana" />
-        <TextBox x:Name="TranslateTextBox"
-                 Grid.Column="1" Grid.Row="3"
-                 Text="Translate" />
 
         <Button x:Name="TranslateButton" Click="TranslateButtonClick"
                 Grid.Column="0" Grid.Row="3"
                 HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10"
                 Focusable="False"
                 Content="Translate" />
+
+        <TextBox Grid.Column="1" Grid.Row="1" Text="Kanji" />
+        <TextBox Grid.Column="1" Grid.Row="2" Text="Hiragana" />
+        <TextBox x:Name="TranslateTextBox" InputLanguageManager.InputLanguage="{Binding CurrentLanguage, ElementName=MainWindowClass, UpdateSourceTrigger=PropertyChanged}"
+                 Grid.Column="1" Grid.Row="3"
+                 Text="Translate" />
+
+
 
         <Button x:Name="StoreButton" Grid.Column="2" Grid.Row="1" Grid.RowSpan="3"
                 HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="12 12 18 12"
