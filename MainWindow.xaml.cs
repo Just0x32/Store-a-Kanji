@@ -41,22 +41,29 @@ namespace Store_a_Kanji
             GetAvailableLanguages();
             availableLanguagesCount = availableLanguages.Count();
 
-            //ValidateLanguages();
+            ValidateLanguages();
 
-            defaultLanguageId = GetDefaultLanguageId();
+            if (IsJapaneseAvailable)
+            {
+                defaultLanguageId = GetDefaultLanguageId();
 
-            CurrentLanguageId = defaultLanguageId;
-            CurrentLanguage = availableLanguages[defaultLanguageId];
-            SetTranslateButtonText(CurrentLanguage);
+                CurrentLanguageId = defaultLanguageId;
+                CurrentLanguage = availableLanguages[defaultLanguageId];
+                SetTranslateButtonText(CurrentLanguage);
 
-            //Show available languages
-            var sb = new StringBuilder();
-            foreach (var item in availableLanguages)
-                sb.Append(item + Environment.NewLine);
-            MessageBox.Show(sb.ToString());
-
-
-
+                //Debug
+                {
+                    var sb = new StringBuilder();
+                    sb.Append("defaultLanguageId = " + defaultLanguageId + Environment.NewLine);
+                    sb.Append("CurrentLanguageId = " + CurrentLanguageId + Environment.NewLine);
+                    sb.Append("CurrentLanguage = " + CurrentLanguage + Environment.NewLine);
+                    for (int i = 0; i < availableLanguagesCount; i++)
+                    {
+                        sb.Append(i + ". " + availableLanguages[i] + Environment.NewLine);
+                    }
+                    MessageBox.Show(sb.ToString());
+                }
+            }
         }
 
         private bool IsJapaneseAvailable { get; set; } = false;
@@ -64,6 +71,21 @@ namespace Store_a_Kanji
         private int CurrentLanguageId { get; set; }
 
         public string CurrentLanguage { get; private set; }
+
+        private void ValidateLanguages()
+        {
+            if (!IsJapaneseAvailable)
+            {
+                MessageBox.Show("\"ja-JP\" keyboard language is not available!");
+                CloseApp();
+            }
+
+            if (availableLanguagesCount < 2)
+            {
+                MessageBox.Show("Only Japanese keyboard language is available!");
+                CloseApp();
+            }
+        }
 
         private void GetAvailableLanguages()
         {
@@ -85,21 +107,6 @@ namespace Store_a_Kanji
 
                     IsJapaneseAvailable = true;
                 }
-            }
-        }
-
-        private void ValidateLanguages()
-        {
-            if (!IsJapaneseAvailable)
-            {
-                MessageBox.Show("\"ja-JP\" keyboard language is not available!");
-                CloseApp();
-            }
-
-            if (availableLanguagesCount < 2)
-            {
-                MessageBox.Show("Only Japanese keyboard language is available!");
-                CloseApp();
             }
         }
 
@@ -145,6 +152,18 @@ namespace Store_a_Kanji
         {
             CurrentLanguageId = (CurrentLanguageId < availableLanguagesCount - 1) ? CurrentLanguageId + 1 : 1;
             CurrentLanguage = availableLanguages[CurrentLanguageId];
+        }
+
+        public void JapaneseTextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            InputLanguageManager.SetInputLanguage((TextBox)sender, new CultureInfo(availableLanguages[0]));
+            RefreshFocusedElement();
+        }
+
+        public void TranslateTextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            InputLanguageManager.SetInputLanguage((TextBox)sender, new CultureInfo(CurrentLanguage));
+            RefreshFocusedElement();
         }
 
         private void ChangeTranslateTextBoxLanguage(string language)

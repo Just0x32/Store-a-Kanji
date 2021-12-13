@@ -46,13 +46,17 @@
                 Focusable="False"
                 Content="Translate" />
 
-        <TextBox Grid.Column="1" Grid.Row="1" Text="Kanji" />
-        <TextBox Grid.Column="1" Grid.Row="2" Text="Hiragana" />
-        <TextBox x:Name="TranslateTextBox" InputLanguageManager.InputLanguage="{Binding CurrentLanguage, ElementName=MainWindowClass, UpdateSourceTrigger=PropertyChanged}"
-                 Grid.Column="1" Grid.Row="3"
-                 Text="Translate" />
-
-
+        <TextBox x:Name="KanjiTextBox"
+                 GotFocus="JapaneseTextBox_GotFocus"
+                 Grid.Column="1" Grid.Row="1" />
+        
+        <TextBox x:Name="HiraganaTextBox"
+                 GotFocus="JapaneseTextBox_GotFocus"
+                 Grid.Column="1" Grid.Row="2" />
+        
+        <TextBox x:Name="TranslateTextBox"
+                 GotFocus="TranslateTextBox_GotFocus"
+                 Grid.Column="1" Grid.Row="3" />
 
         <Button x:Name="StoreButton" Grid.Column="2" Grid.Row="1" Grid.RowSpan="3"
                 HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="12 12 18 12"
