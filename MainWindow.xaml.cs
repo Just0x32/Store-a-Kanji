@@ -25,6 +25,8 @@ namespace Store_a_Kanji
     /// </summary>
     public partial class MainWindow : Window
     {
+        private ViewModel viewModel;
+
         private readonly string onAppStartLanguage;
         private readonly int defaultLanguageId;
 
@@ -34,6 +36,8 @@ namespace Store_a_Kanji
         public MainWindow()
         {
             InitializeComponent();
+
+            viewModel = new ViewModel();
 
             onAppStartLanguage = InputLanguageManager.Current.CurrentInputLanguage.Name.ToString();
             CurrentLanguage = onAppStartLanguage;
@@ -170,6 +174,14 @@ namespace Store_a_Kanji
         {
             InputLanguageManager.SetInputLanguage(TranslateTextBox, new CultureInfo(language));
             RefreshFocusedElement();
+        }
+
+        private void StoreButton_Click(object sender, RoutedEventArgs e)
+        {
+            viewModel.StoreWords(KanjiTextBox.Text, HiraganaTextBox.Text, TranslateTextBox.Text);
+
+            if (!viewModel.isSuccessfulWrite)
+                MessageBox.Show("Words haven't been stored!");
         }
 
         private void RefreshFocusedElement()
