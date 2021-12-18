@@ -12,7 +12,11 @@ namespace Store_a_Kanji
 
         public ViewModel() => model = new Model();
 
-        public bool isSuccessfulWrite { get => model.isSuccessfulWrite; }
+        public bool isUnsuccessfulFileCreating { get => model.isUnsuccessfulFileCreating; }
+
+        public bool isUnsuccessfulWrite { get => model.isUnsuccessfulWrite; }
+
+        public bool wasFileDeletedOnStoring { get => model.wasFileDeletedOnStoring; }
 
         public void StoreWords(string kanji, string hiragana, string translate) => model.StoreWords(kanji, hiragana, translate);
     }

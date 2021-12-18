@@ -30,6 +30,11 @@ namespace Store_a_Kanji
         private readonly string onAppStartLanguage;
         private readonly int defaultLanguageId;
 
+        private readonly string unsuccesfulFileCreating = @"Unsuccesful output file creating!";
+        private readonly string unsuccesfulFileWriting = @"Unsuccesful output file writing in!";
+        private readonly string fileDidntExist = @"The output file was deleted!";
+        private readonly string cantStoreMessage = @"The words haven't been stored.";
+
         private List<string> availableLanguages = new List<string>() { "reserved for ja-JP" };
         private readonly int availableLanguagesCount;
 
@@ -54,6 +59,14 @@ namespace Store_a_Kanji
                 CurrentLanguageId = defaultLanguageId;
                 CurrentLanguage = availableLanguages[defaultLanguageId];
                 SetTranslateButtonText(CurrentLanguage);
+
+                CheckFileCreating();
+
+                void CheckFileCreating()
+                {
+                    if (viewModel.isUnsuccessfulFileCreating)
+                        MessageBox.Show(unsuccesfulFileCreating);
+                }
 
                 //Debug
                 {
@@ -180,8 +193,20 @@ namespace Store_a_Kanji
         {
             viewModel.StoreWords(KanjiTextBox.Text, HiraganaTextBox.Text, TranslateTextBox.Text);
 
-            if (!viewModel.isSuccessfulWrite)
-                MessageBox.Show("Words haven't been stored!");
+            CheckFileWriting();
+            CheckFileExists();
+
+            void CheckFileWriting()
+            {
+                if (viewModel.isUnsuccessfulWrite)
+                    MessageBox.Show(unsuccesfulFileWriting + Environment.NewLine + cantStoreMessage);
+            }
+
+            void CheckFileExists()
+            {
+                if (viewModel.wasFileDeletedOnStoring)
+                    MessageBox.Show(fileDidntExist + Environment.NewLine + cantStoreMessage);
+            }
         }
 
         private void RefreshFocusedElement()
