@@ -5,6 +5,15 @@
     <TargetFramework>net5.0-windows</TargetFramework>
     <RootNamespace>Store_a_Kanji</RootNamespace>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>KanjiBox.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="KanjiBox.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="KanjiBox.ico" />
+  </ItemGroup>
 
 </Project>

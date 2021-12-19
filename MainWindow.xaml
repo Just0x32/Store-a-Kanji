@@ -7,6 +7,7 @@
         xmlns:local="clr-namespace:Store_a_Kanji"
         mc:Ignorable="d"
         Title="Store a Kanji"
+        Icon="KanjiBox.ico"
         WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize"
         MaxHeight="200" MinHeight="200" Height="200" MaxWidth="400" MinWidth="400" Width="400">
     <Window.Resources>
