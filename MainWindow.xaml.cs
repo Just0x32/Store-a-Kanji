@@ -58,7 +58,7 @@ namespace Store_a_Kanji
 
                 CurrentLanguageId = defaultLanguageId;
                 CurrentLanguage = availableLanguages[defaultLanguageId];
-                SetTranslateButtonText(CurrentLanguage);
+                SetTranslationButtonText(CurrentLanguage);
 
                 CheckFileCreating();
 
@@ -69,17 +69,17 @@ namespace Store_a_Kanji
                 }
 
                 //Debug
-                {
-                    var sb = new StringBuilder();
-                    sb.Append("defaultLanguageId = " + defaultLanguageId + Environment.NewLine);
-                    sb.Append("CurrentLanguageId = " + CurrentLanguageId + Environment.NewLine);
-                    sb.Append("CurrentLanguage = " + CurrentLanguage + Environment.NewLine);
-                    for (int i = 0; i < availableLanguagesCount; i++)
-                    {
-                        sb.Append(i + ". " + availableLanguages[i] + Environment.NewLine);
-                    }
-                    MessageBox.Show(sb.ToString());
-                }
+                //{
+                //    var sb = new StringBuilder();
+                //    sb.Append("defaultLanguageId = " + defaultLanguageId + Environment.NewLine);
+                //    sb.Append("CurrentLanguageId = " + CurrentLanguageId + Environment.NewLine);
+                //    sb.Append("CurrentLanguage = " + CurrentLanguage + Environment.NewLine);
+                //    for (int i = 0; i < availableLanguagesCount; i++)
+                //    {
+                //        sb.Append(i + ". " + availableLanguages[i] + Environment.NewLine);
+                //    }
+                //    MessageBox.Show(sb.ToString());
+                //}
             }
         }
 
@@ -145,23 +145,23 @@ namespace Store_a_Kanji
             return i;
         }
 
-        private void TranslateButtonClick(object sender, RoutedEventArgs e)
+        private void TranslationButtonClick(object sender, RoutedEventArgs e)
         {
             ChangeCurrentLanguage();
 
-            ChangeTranslateTextBoxLanguage(CurrentLanguage);
-            SetTranslateButtonText(CurrentLanguage);
+            ChangeTranslationTextBoxLanguage(CurrentLanguage);
+            SetTranslationButtonText(CurrentLanguage);
         }
 
-        private void SetTranslateButtonText(string language)
+        private void SetTranslationButtonText(string language)
         {
             if (language.Contains("en-"))
             {
-                TranslateButton.Content = "Translate";
+                TranslationButton.Content = "Translation";
             }
             else if (language.Contains("ru-"))
             {
-                TranslateButton.Content = "Перевод";
+                TranslationButton.Content = "Перевод";
             }
         }
 
@@ -177,21 +177,21 @@ namespace Store_a_Kanji
             RefreshFocusedElement();
         }
 
-        public void TranslateTextBox_GotFocus(object sender, RoutedEventArgs e)
+        public void TranslationTextBox_GotFocus(object sender, RoutedEventArgs e)
         {
             InputLanguageManager.SetInputLanguage((TextBox)sender, new CultureInfo(CurrentLanguage));
             RefreshFocusedElement();
         }
 
-        private void ChangeTranslateTextBoxLanguage(string language)
+        private void ChangeTranslationTextBoxLanguage(string language)
         {
-            InputLanguageManager.SetInputLanguage(TranslateTextBox, new CultureInfo(language));
+            InputLanguageManager.SetInputLanguage(TranslationTextBox, new CultureInfo(language));
             RefreshFocusedElement();
         }
 
         private void StoreButton_Click(object sender, RoutedEventArgs e)
         {
-            viewModel.StoreWords(KanjiTextBox.Text, HiraganaTextBox.Text, TranslateTextBox.Text);
+            viewModel.StoreWords(KanjiTextBox.Text, HiraganaTextBox.Text, TranslationTextBox.Text);
 
             CheckFileWriting();
             CheckFileExists();

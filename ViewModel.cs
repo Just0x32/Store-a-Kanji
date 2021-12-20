@@ -18,6 +18,6 @@ namespace Store_a_Kanji
 
         public bool wasFileDeletedOnStoring { get => model.wasFileDeletedOnStoring; }
 
-        public void StoreWords(string kanji, string hiragana, string translate) => model.StoreWords(kanji, hiragana, translate);
+        public void StoreWords(string kanji, string hiragana, string translation) => model.StoreWords(kanji, hiragana, translation);
     }
 }

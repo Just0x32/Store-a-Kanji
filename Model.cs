@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ClosedXML.Excel;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,9 +12,7 @@ namespace Store_a_Kanji
 {
     class Model
     {
-        private readonly string outputFilePath = @"output.txt";
-
-        private StreamWriter streamWriter;
+        private readonly string outputFilePath = @"output.xlsx";
 
         public Model() => CheckOutputFileOnStart(outputFilePath);
 
@@ -23,10 +22,10 @@ namespace Store_a_Kanji
 
         public bool wasFileDeletedOnStoring { get; private set; } = false;
 
-        public void StoreWords(string kanji, string hiragana, string translate)
+        public void StoreWords(string kanji, string hiragana, string translation)
         {
             if (DoesOutputFileExistOnStoring(outputFilePath))
-                WriteToFile(outputFilePath, kanji, hiragana, translate);
+                WriteToFile(outputFilePath, kanji, hiragana, translation);
 
             bool DoesOutputFileExistOnStoring(string path)
             {
@@ -47,34 +46,94 @@ namespace Store_a_Kanji
             if (!File.Exists(path))
                 CreateFile(path);
 
-            void CreateFile(string path)
+            void CreateFile(string filePath)
             {
-                try
+                using (var workbook = new XLWorkbook())
                 {
-                    using (File.Create(path)) { };
+                    workbook.Worksheets.Add();
+                    var worksheet = workbook.Worksheets.First();
+
+                    WriteCell("A1", "Kanji");
+                    WriteCell("B1", "Hiragana");
+                    WriteCell("C1", "Translation");
+
+                    workbook.SaveAs(filePath);
+
+                    void WriteCell(string cell, string value)
+                    {
+                        int column;
+
+                        switch (cell[0])
+                        {
+                            case 'A':
+                                column = 1;
+                                break;
+                            case 'B':
+                                column = 2;
+                                break;
+                            case 'C':
+                                column = 3;
+                                break;
+                            default:
+                                column = 4;
+                                break;
+                        }
+
+                        worksheet.Cell(cell).Value = value;
+                        worksheet.Column(column).AdjustToContents();
+                    }
                 }
-                catch (IOException e)
-                {
-                    isUnsuccessfulFileCreating = true;
-                }
+
+                //catch (IOException e)
+                //{
+                //    isUnsuccessfulFileCreating = true;
+                //}
             }
         }
 
-        private void WriteToFile(string path, string kanji, string hiragana, string translate)
+        private void WriteToFile(string filePath, string kanji, string hiragana, string translation)
         {
-            try
+            using (var workbook = new XLWorkbook(filePath))
             {
-                streamWriter = new StreamWriter(path, true);
-                streamWriter.WriteLine(kanji + "*" + hiragana + "*" + translate);
+                var worksheet = workbook.Worksheets.First();
+
+                int currentRow = worksheet.LastRowUsed().RowNumber() + 1;
+
+                WriteCell($"A{currentRow}", kanji);
+                WriteCell($"B{currentRow}", hiragana);
+                WriteCell($"C{currentRow}", translation);
+
+                workbook.Save();
+
+                void WriteCell(string cell, string value)
+                {
+                    int column;
+
+                    switch (cell[0])
+                    {
+                        case 'A':
+                            column = 1;
+                            break;
+                        case 'B':
+                            column = 2;
+                            break;
+                        case 'C':
+                            column = 3;
+                            break;
+                        default:
+                            column = 4;
+                            break;
+                    }
+
+                    worksheet.Cell(cell).Value = value;
+                    worksheet.Column(column).AdjustToContents();
+                }
             }
-            catch (IOException e)
-            {
-                isUnsuccessfulWrite = true;
-            }
-            finally
-            {
-                streamWriter?.Dispose();
-            }
+
+            //catch (IOException e)
+            //{
+            //    isUnsuccessfulFileCreating = true;
+            //}
         }
     }
 }

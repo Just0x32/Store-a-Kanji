@@ -41,11 +41,11 @@
         <TextBlock Grid.Column="0" Grid.Row="1" Text="漢字" />
         <TextBlock Grid.Column="0" Grid.Row="2" Text="Hiragana" />
 
-        <Button x:Name="TranslateButton" Click="TranslateButtonClick"
+        <Button x:Name="TranslationButton" Click="TranslationButtonClick"
                 Grid.Column="0" Grid.Row="3"
                 HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10"
                 Focusable="False"
-                Content="Translate" />
+                Content="Translation" />
 
         <TextBox x:Name="KanjiTextBox"
                  GotFocus="JapaneseTextBox_GotFocus"
@@ -55,8 +55,8 @@
                  GotFocus="JapaneseTextBox_GotFocus"
                  Grid.Column="1" Grid.Row="2" />
         
-        <TextBox x:Name="TranslateTextBox"
-                 GotFocus="TranslateTextBox_GotFocus"
+        <TextBox x:Name="TranslationTextBox"
+                 GotFocus="TranslationTextBox_GotFocus"
                  Grid.Column="1" Grid.Row="3" />
 
         <Button x:Name="StoreButton" Click="StoreButton_Click"

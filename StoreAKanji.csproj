@@ -13,6 +13,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="ClosedXML" Version="0.95.4" />
+    <PackageReference Include="EPPlus" Version="5.8.4" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="KanjiBox.ico" />
   </ItemGroup>
 
