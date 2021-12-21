@@ -14,6 +14,8 @@ namespace Store_a_Kanji
     {
         private readonly string outputFilePath = @"output.xlsx";
 
+        private XLWorkbook workbook;
+
         public Model() => CheckOutputFileOnStart(outputFilePath);
 
         public bool isUnsuccessfulFileCreating { get; private set; } = false;
@@ -48,8 +50,10 @@ namespace Store_a_Kanji
 
             void CreateFile(string filePath)
             {
-                using (var workbook = new XLWorkbook())
+                try
                 {
+                    workbook = new XLWorkbook();
+
                     workbook.Worksheets.Add();
                     var worksheet = workbook.Worksheets.First();
 
@@ -83,18 +87,22 @@ namespace Store_a_Kanji
                         worksheet.Column(column).AdjustToContents();
                     }
                 }
-
-                //catch (IOException e)
-                //{
-                //    isUnsuccessfulFileCreating = true;
-                //}
+                catch (IOException e)
+                {
+                    isUnsuccessfulFileCreating = true;
+                }
+                finally
+                {
+                    workbook?.Dispose();
+                }
             }
         }
 
         private void WriteToFile(string filePath, string kanji, string hiragana, string translation)
         {
-            using (var workbook = new XLWorkbook(filePath))
+            try
             {
+                workbook = new XLWorkbook(filePath);
                 var worksheet = workbook.Worksheets.First();
 
                 int currentRow = worksheet.LastRowUsed().RowNumber() + 1;
@@ -129,11 +137,14 @@ namespace Store_a_Kanji
                     worksheet.Column(column).AdjustToContents();
                 }
             }
-
-            //catch (IOException e)
-            //{
-            //    isUnsuccessfulFileCreating = true;
-            //}
+            catch (IOException e)
+            {
+                isUnsuccessfulFileCreating = true;
+            }
+            finally
+            {
+                workbook?.Dispose();
+            }
         }
     }
 }
